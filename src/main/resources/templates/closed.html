@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Closed</title>
+    <link
+            rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+            integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
+            crossorigin="anonymous"
+    />
+    <link  rel="stylesheet" href="style.css"/>
+</head>
+<body>
+<div th:replace="nav :: copy">
+
+</div>
+<div class="container" style="margin-top: 5vh">
+
+
+    <form th:action="@{/changeUser}" method="post" >
+        <select style="max-width: 110px" class="custom-select my-1 mr-sm-2" onchange="this.form.submit()" th:name="u" >
+            <option value="" disabled selected hidden>Choose...</option>
+            <option  th:each="username : ${listUsername}" th:value="${username}" th:text="${username}"></option>
+        </select>
+    </form>
+</div>
+<div class="container" style="margin-top: 10px">
+    <table class="table" id="table">
+        <thead class="thead-light">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Job</th>
+            <th scope="col">Diffcult</th>
+            <th scope="col">Created</th>
+            <th scope="col">Completed</th>
+            <th scope="col">Status</th>
+        </tr>
+        </thead>
+        <tbody >
+
+        <tr th:each="issuex,iterator : ${list}">
+            <th th:text="${iterator.count}"></th>
+            <td th:text="${issuex.getUser().getUsername()}">Mark</td>
+            <td  th:text="${issuex.getJob()}">Fix navbar in main menu </td>
+            <td style="padding-left: 40px" th:text="${issuex.getDifficult()}">3</td>
+            <td  th:text="${issuex.getCreated()}">01-01-2020</td>
+                            <td th:text="${issuex.getComplete()}"> </td>
+            <td  th:text="${issuex.getStatus()}">On Going</td>
+
+        </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</div>
+
+
+</body>
+</html>

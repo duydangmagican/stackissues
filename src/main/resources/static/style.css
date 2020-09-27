@@ -1,0 +1,37 @@
+.navbar-nav .nav-item.active .nav-link,
+.navbar-nav .nav-item:hover .nav-link {
+    color: black;
+    background-color: #f6f6f6;
+}
+
+.text-decoration-none {
+    text-decoration: none;
+}
+
+.navbar-brand.text-home {
+    color: #f0a500;
+}
+
+.navbar-brand.text-home:hover {
+    color: #cf7500;
+}
+
+.container.flex-ver {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 10vh;
+}
+
+.login {
+    text-align: center;
+    margin-top: 10vh;
+}
+
+.login-image {
+    border-radius: 12px;
+}
+
+.mtop-34 {
+    margin-top: 34px;
+}

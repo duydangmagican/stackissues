@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+    <link
+            rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+            integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
+            crossorigin="anonymous"
+    />
+    <link  rel="stylesheet" href="style.css"/>
+</head>
+<body>
+<div th:replace="nav :: copy">
+
+</div>
+<div class="alert alert-danger" style="text-align: center" th:if="${requireLoginMessage}" th:text="${requireLoginMessage}"> </div>
+<div class="alert alert-danger" style="text-align: center" th:if="${errorMessage}" th:text="${errorMessage}"> </div>
+
+<div class="container flex-ver">
+    <div >
+        <form style="display: flex" class="form-inline" th:object="${newIssue}" method="post" th:action="@{/add}">
+            <button type="submit" class="btn btn-primary my-1">Add</button>
+
+          <div class="custom-control custom-checkbox my-1 mr-sm-2">
+
+            </div>
+
+            <input type="text" th:field="*{issueid}" hidden/>
+            <label style="margin-right:5px;" 
+            >Job</label
+            >
+            <input
+                    type="text"
+                    class="form-control"
+
+                    th:field="*{job}"
+                    required
+            />
+            <label style="margin-left: 10px;" class="my-1 mr-2" for="inlineFormCustomSelectPref"
+            >Difficult</label
+            >
+            <select
+                    class="custom-select my-1 mr-sm-2"
+                    id="inlineFormCustomSelectPref"
+                    th:field="*{difficult}"
+                    required
+            >
+<!--                <option value="" disabled selected hidden>Choose...</option>-->
+                <option th:each="diff : ${difficults}" th:value="${diff.getValue()}" th:text="${diff}"></option>
+            </select>
+        </form>
+
+
+    </div>
+    <div style="margin-top: 10px" >
+        <form style="position: relative" th:action="@{/update}" th:method="post" th:object="${formIssues}">
+            <table class="table" id="table">
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Job</th>
+                    <th scope="col">Diffcult</th>
+                    <th scope="col">Created</th>
+                    <!--                <th scope="col">Completed</th>-->
+                    <th scope="col">Status</th>
+                    <th scope="col" th:if="${#ctx.#request.getSession().getAttribute('userLogined')!= null}">Set status</th>
+                </tr>
+                </thead>
+                <tbody >
+
+                <tr th:each="issuex,iterator : *{issues}">
+                    <th th:text="${iterator.count}"></th>
+                    <td th:text="${issuex.getUser().getUsername()}">Mark</td>
+                    <td  th:text="${issuex.getJob()}">Fix navbar in main menu </td>
+                    <td style="padding-left: 40px" th:text="${issuex.getDifficult()}">3</td>
+                    <td  th:text="${issuex.getCreated()}">01-01-2020</td>
+                    <!--                <td> </td>-->
+                    <td  th:text="${issuex.getStatus()}">On Going</td>
+                    <td  th:if="${#ctx.#request.getSession().getAttribute('userLogined')!= null}">
+                        <input type="text" th:field="*{issues[__${iterator.index}__].issueid}" th:value="*{issues[__${iterator.index}__].getIssueid()}" th:if="${session.userLogined.getRole().toString() eq 'EXECUTOR'} or ${issuex.getUser().getUsername()== session.userLogined.getUsername()}" hidden/>
+                        <select th:field="*{issues[__${iterator.index}__].status}" th:if="${session.userLogined.getRole().toString() eq 'EXECUTOR'} or ${issuex.getUser().getUsername()== session.userLogined.getUsername()}">
+                            <option th:each="sta : ${statusList}" th:value="${sta}" th:text="${sta}" >
+                                Status
+                            </option>
+                        </select>
+
+<!--                        <div style="display: flex;align-items: center" th:if="${session.userLogined.getRole().toString() eq 'EXECUTOR'} or ${issuex.getUser().getUsername()== session.userLogined.getUsername()}">-->
+<!--                            <a class="btn btn-outline-secondary" >-->
+<!--                                Update-->
+<!--                            </a>-->
+<!--                            <a class="btn btn-outline-secondary" >-->
+<!--                                Delete-->
+<!--                            </a>-->
+<!--                        </div>-->
+                    </td>
+                </tr>
+
+
+
+
+
+                </tbody>
+            </table>
+
+                                <button th:if="${#ctx.#request.getSession().getAttribute('userLogined')!= null}" type="submit" class="btn btn-outline-secondary" style="position: absolute;top: -52px;left: 90%">
+                                    Update
+                                </button>
+        </form>
+
+
+
+    </div>
+</div> 
+
+<!-- JS, Popper.js, and jQuery -->
+<script
+        src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"
+></script>
+<script
+        src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+        crossorigin="anonymous"
+></script>
+<script
+        src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+        crossorigin="anonymous"
+></script>
+</body>
+</html>
